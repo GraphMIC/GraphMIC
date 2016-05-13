@@ -70,7 +70,7 @@ Acknowledgements
 ----
 This software was developed in collaboration with [OTH Regensburg](https://www.oth-regensburg.de/en.html) and [ReMIC](http://www.re-mic.de)
 
-<img src="doc/img/logo_OTH_ReMIC.svg" width="260px" />
+<img src="doc/img/logo_OTH_ReMIC.png" width="260px" />
 
 Contact
 ----
