@@ -1,0 +1,12 @@
+#pragma once
+
+namespace gm
+{
+    struct Meta
+    {
+        static constexpr auto appName       = "@PROJECT_NAME@";
+        static constexpr auto orgName       = "@GRAPHMIC_ORG_NAME@";
+        static constexpr auto orgDomain     = "@GRAPHMIC_ORG_DOMAIN@";
+        static constexpr auto versionString = "@GRAPHMIC_VERSION_MAJOR@.@GRAPHMIC_VERSION_MINOR@.@GRAPHMIC_VERSION_PATCH@";
+    };
+}

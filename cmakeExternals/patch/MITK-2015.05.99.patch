@@ -1,0 +1,528 @@
+diff --git a/CMakeExternals/Boost.cmake b/CMakeExternals/Boost.cmake
+index 3678c66..1ad2206 100644
+--- a/CMakeExternals/Boost.cmake
++++ b/CMakeExternals/Boost.cmake
+@@ -15,9 +15,13 @@ if(MITK_USE_Boost)
+   set(proj_DEPENDENCIES )
+   set(Boost_DEPENDS ${proj})
+ 
++  if( MITK_USE_Python OR MITK_USE_SYSTEM_PYTHON )
++    list(APPEND proj_DEPENDENCIES Python)
++  endif()
++
+   if(NOT DEFINED BOOST_ROOT AND NOT MITK_USE_SYSTEM_Boost)
+ 
+-    set(_boost_version 1_56)
++    set(_boost_version 1_60)
+     set(_boost_install_include_dir include/boost)
+     if(WIN32)
+       set(_boost_install_include_dir include/boost-${_boost_version}/boost)
+@@ -142,13 +146,14 @@ if(MITK_USE_Boost)
+ 
+     ExternalProject_Add(${proj}
+       LIST_SEPARATOR ${sep}
+-      URL ${MITK_THIRDPARTY_DOWNLOAD_PREFIX_URL}/boost_${_boost_version}_0.tar.bz2
+-      URL_MD5 a744cf167b05d72335f27c88115f211d
++      URL ${MITK_THIRDPARTY_DOWNLOAD_PREFIX_URL}/boost_${_boost_version}_0.7z
++      #URL_MD5 a744cf167b05d72335f27c88115f211d
+       # We use in-source builds for Boost
+       BINARY_DIR ${ep_prefix}/src/${proj}
+       CONFIGURE_COMMAND "<SOURCE_DIR>/bootstrap${_shell_extension}"
+         --with-toolset=${_boost_with_toolset}
+         --with-libraries=${_boost_libs}
++        --with-python=${PYTHON_EXECUTABLE}
+         "--prefix=<INSTALL_DIR>"
+       ${_boost_build_cmd}
+       INSTALL_COMMAND ${_install_cmd}
+diff --git a/CMakeExternals/ChangeSimpleITKLibsInstallNameForMac.cmake.in b/CMakeExternals/ChangeSimpleITKLibsInstallNameForMac.cmake.in
+new file mode 100644
+index 0000000..ff3c20a
+--- /dev/null
++++ b/CMakeExternals/ChangeSimpleITKLibsInstallNameForMac.cmake.in
+@@ -0,0 +1,43 @@
++# Scan the MITK-Superbuild/ep/lib directory for *.dylib files and change their install names for mac
++# On Mac OS X system each shared library usually has a install name which is the absolute path of the library.
++# For some reasons boost libs do not contain the absolute path but just their name
++# (e.g. "libboost_thread.dylib" should be named "<PATH_TO_LIB/libboost_thread.dylib>")
++
++# Get all the shared libraries which are located in the Boost-install/lib directory
++file(GLOB dylibFiles
++  @SimpleITK_Build_Dir@/Wrapping/*.so
++  @SimpleITK_Build_Dir@/lib/*.dylib)
++
++set(_dep_dylibs
++  libSimpleITKBasicFilters13
++  libSimpleITKIO
++  libSimpleITKRegistration
++  libSimpleITKBasicFilters1
++  libSimpleITKBasicFilters2
++  libSimpleITKBasicFilters3
++  libSimpleITKBasicFilters4
++  libSimpleITKBasicFilters5
++  libSimpleITKBasicFilters6
++  libSimpleITKBasicFilters7
++  libSimpleITKBasicFilters8
++  libSimpleITKBasicFilters9
++  libSimpleITKBasicFilters10
++  libSimpleITKBasicFilters11
++  libSimpleITKBasicFilters12
++  libSimpleITKBasicFilters0
++  libSimpleITKCommon
++  libSimpleITKExplicit
++)
++# For each shared library call the install_name_tool in order to change the install name of the according library
++foreach(_dylib ${dylibFiles})
++   message("Fixing SimpleITK install name for lib: ${_dylib}")
++   get_filename_component(_dylib_name ${_dylib} NAME)
++   execute_process(COMMAND install_name_tool -id \@rpath/${_dylib_name} ${_dylib})
++
++   foreach(_dep_dylib_name ${_dep_dylibs})
++     set(_lib_name ${_dep_dylib_name}-@MITK_SIMPLEITK_VERSION@.dylib)
++     execute_process(COMMAND install_name_tool -change ${_lib_name} \@rpath/${_lib_name} ${_dylib})
++     #execute_process(COMMAND install_name_tool -change ${_lib_name} @SimpleITK_Build_Dir@/lib/${_lib_name} ${_dylib})
++   endforeach()
++endforeach()
++
+diff --git a/CMakeExternals/Numpy.cmake b/CMakeExternals/Numpy.cmake
+index 769e1e5..7f000ec 100644
+--- a/CMakeExternals/Numpy.cmake
++++ b/CMakeExternals/Numpy.cmake
+@@ -69,10 +69,10 @@ if( MITK_USE_Python AND NOT MITK_USE_SYSTEM_PYTHON )
+         mitkFunctionExternalPythonBuildStep(${proj} install \"${PYTHON_EXECUTABLE}\" \"${CMAKE_BINARY_DIR}\" setup.py install --prefix=\${_install_dir})
+        ")
+ 
+-    set(Numpy_URL ${MITK_THIRDPARTY_DOWNLOAD_PREFIX_URL}/numpy-1.9.2.tar.gz)
++    set(Numpy_URL "https://sourceforge.net/projects/numpy/files/NumPy/1.11.0/numpy-1.11.0.tar.gz")
+     #set(Numpy_URL ${MITK_THIRDPARTY_DOWNLOAD_PREFIX_URL}/numpy-1.4.1.tar.gz)
+     #set(Numpy_MD5 "5c7b5349dc3161763f7f366ceb96516b")
+-    set(Numpy_MD5 "a1ed53432dbcd256398898d35bc8e645")
++    set(Numpy_MD5 "bc56fb9fc2895aa4961802ffbdb31d0b")
+ 
+     # escape spaces
+     if(UNIX)
+diff --git a/CMakeExternals/Python.cmake b/CMakeExternals/Python.cmake
+index 8446978..7855dfb 100644
+--- a/CMakeExternals/Python.cmake
++++ b/CMakeExternals/Python.cmake
+@@ -2,28 +2,27 @@
+ # Python
+ #----------------------------------------------------------------------
+ if( MITK_USE_Python AND NOT MITK_USE_SYSTEM_PYTHON )
+-    # Sanity checks
++  # Sanity checks
+   if(DEFINED Python_DIR AND NOT EXISTS ${Python_DIR})
+     message(FATAL_ERROR "Python_DIR variable is defined but corresponds to non-existing directory")
+   endif()
+ 
+   set(MITK_PYTHON_MAJOR_VERSION 2)
+   set(MITK_PYTHON_MINOR_VERSION 7)
+-  set(MITK_PYTHON_PATCH_VERSION 3)
++  set(MITK_PYTHON_PATCH_VERSION 11)
+   set(PYTHON_SOURCE_PACKAGE Python-${MITK_PYTHON_MAJOR_VERSION}.${MITK_PYTHON_MINOR_VERSION}.${MITK_PYTHON_PATCH_VERSION})
+   set(proj ${PYTHON_SOURCE_PACKAGE})
+   set(proj_DEPENDENCIES )
+   set(${proj}_DEPENDS ${proj})
+ 
+   if(NOT DEFINED Python_DIR)
+-
+     # download the source code
+     ExternalProject_Add(${proj}
+       LIST_SEPARATOR ${sep}
+-      URL ${MITK_THIRDPARTY_DOWNLOAD_PREFIX_URL}/${PYTHON_SOURCE_PACKAGE}.tgz
+-      URL_MD5  "2cf641732ac23b18d139be077bd906cd"
++      URL "https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz"
++      URL_MD5 "6b6076ec9e93f05dd63e47eb9c15728b"
+       # patch the VS compiler config
+-      PATCH_COMMAND ${PATCH_COMMAND} -N -p1 -i ${CMAKE_CURRENT_LIST_DIR}/Python-2.7.3.patch
++      #PATCH_COMMAND ${PATCH_COMMAND} -N -p1 -i ${CMAKE_CURRENT_LIST_DIR}/Python-2.7.3.patch
+       CONFIGURE_COMMAND ""
+       BUILD_COMMAND ""
+       INSTALL_COMMAND ""
+@@ -33,88 +32,92 @@ if( MITK_USE_Python AND NOT MITK_USE_SYSTEM_PYTHON )
+   endif()
+ 
+   set(proj Python)
+-  set(proj_DEPENDENCIES ZLIB ${PYTHON_SOURCE_PACKAGE})
++  set(proj_DEPENDENCIES ${PYTHON_SOURCE_PACKAGE})
+   set(Python_DEPENDS ${proj})
+ 
++
++
+   if(NOT DEFINED Python_DIR)
+ 
+     set(additional_cmake_cache_args )
+     list(APPEND additional_cmake_cache_args
+-        -DBUILTIN_ARRAY:BOOL=ON
+-        -DBUILTIN_AUDIOOP:BOOL=ON
+-        -DBUILTIN_BINASCII:BOOL=ON
+-        -DBUILTIN_BISECT:BOOL=ON
+-        -DBUILTIN_BSDB:BOOL=ON
+-        -DBUILTIN_BSSDB:BOOL=ON
+-        -DBUILTIN_BZ2:BOOL=ON
+-        -DBUILTIN_CMATH:BOOL=ON
+-        -DBUILTIN_COLLECTIONS:BOOL=ON
+-        -DBUILTIN_CODECS_CN:BOOL=ON
+-        -DBUILTIN_CODECS_HK:BOOL=ON
+-        -DBUILTIN_CODECS_ISO2022:BOOL=ON
+-        -DBUILTIN_CODECS_JP:BOOL=ON
+-        -DBUILTIN_CODECS_KR:BOOL=ON
+-        -DBUILTIN_CODECS_TW:BOOL=ON
+-        -DBUILTIN_CPICKLE:BOOL=ON
+-        -DBUILTIN_CRYPT:BOOL=ON
+-        -DBUILTIN_CSTRINGIO:BOOL=ON
+-        -DBUILTIN_CSV:BOOL=ON
+-        -DBUILTIN_CTYPES:BOOL=OFF
+-        #-DBUILTIN_CTYPES_TEST:BOOL=OFF
+-        #-DBUILTIN_CURSES:BOOL=ON
+-        -DBUILTIN_DATETIME:BOOL=ON
+-        -DBUILTIN_DBM:BOOL=ON
+-        -DBUILTIN_ELEMENTTREE:BOOL=ON
+-        -DBUILTIN_FCNTL:BOOL=ON
+-        -DBUILTIN_FUNCTOOLS:BOOL=ON
+-        -DBUILTIN_FUTURE_BUILTINS:BOOL=ON
+-        -DBULTIN_GDBM:BOOL=ON
+-        -DBUILTIN_GRP:BOOL=ON
+-        -DBUILTIN_HASHLIB:BOOL=ON
+-        -DBUILTIN_HEAPQ:BOOL=ON
+-        -DBUILTIN_HOTSHOT:BOOL=ON
+-        -DBUILTIN_IO:BOOL=ON
+-        -DBUILTIN_ITERTOOLS:BOOL=ON
+-        -DBUILTIN_JSON:BOOL=ON
+-        -DBUILTIN_LOCALE:BOOL=ON
+-        -DBUILTIN_LSPROF:BOOL=ON
+-        -DBUILTIN_MATH:BOOL=ON
+-        -DBUILTIN_MMAP:BOOL=ON
+-        -DBUILTIN_MULTIBYTECODEC:BOOL=ON
+-        -DBUILTIN_MD5:BOOL=ON
+-        -DBUILTIN_MULTIPROCESSING:BOOL=ON
+-        -DBUILTIN_NIS:BOOL=ON
+-        -DBUILTIN_NIT:BOOL=ON
+-        -DBUILTIN_OPERATOR:BOOL=ON
+-        -DBUILTIN_PARSER:BOOL=ON
+-        -DBUILTIN_POSIX:BOOL=ON
+-        -DBUILTIN_PWD:BOOL=ON
+-        -DBUILTIN_PYEXPAT:BOOL=ON
+-        -DBUILTIN_READLINE:BOOL=ON
+-        -DBUILTIN_RESOURCE:BOOL=ON
+-        -DBULTIN_RANDOM:BOOL=ON
+-        -DBUILTIN_SCPROXY:BOOL=OFF
+-        -DBUILTIN_SELECT:BOOL=ON
+-        -DBUILTIN_SHA:BOOL=ON
+-        -DBUILTIN_SHA256:BOOL=ON
+-        -DBUILTIN_SHA512:BOOL=ON
+-        -DBUILTIN_SOCKET:BOOL=ON
+-        -DBUILTIN_SPWD:BOOL=ON
+-        -DBUILTIN_SQLITE3:BOOL=OFF
+-        -DBUILTIN_SSL:BOOL=ON
+-        -DBUILTIN_STROP:BOOL=ON
+-        -DBUILTIN_STRUCT:BOOL=ON
+-        -DBUILTIN_SUBPROCESS:BOOL=ON
+-        -DBUILTIN_SYSLOG:BOOL=ON
+-        -DBUILTIN_TERMIOS:BOOL=ON
+-        #-DBUILTIN_TESTCAPI:BOOL=OFF
+-        -DBUILTIN_TIME:BOOL=ON
+-        -DBUILTIN_TKINTER:BOOL=ON
+-        -DBUILTIN_UNICODEDATA:BOOL=ON
+-        -DBUILTIN_WINREG:BOOL=ON
+-        -DBUILTIN_ZLIB:BOOL=OFF
+-        -DUSE_SYSTEM_ZLIB:BOOL=ON
+-        )
++      -DBUILTIN_ARRAY:BOOL=ON
++      -DBUILTIN_AUDIOOP:BOOL=ON
++      -DBUILTIN_BINASCII:BOOL=OFF
++      -DBUILTIN_BISECT:BOOL=ON
++      -DBUILTIN_BSDB:BOOL=ON
++      -DBUILTIN_BSSDB:BOOL=ON
++      -DBUILTIN_BZ2:BOOL=ON
++      -DBUILTIN_CMATH:BOOL=ON
++      -DBUILTIN_COLLECTIONS:BOOL=ON
++      -DBUILTIN_CODECS_CN:BOOL=ON
++      -DBUILTIN_CODECS_HK:BOOL=ON
++      -DBUILTIN_CODECS_ISO2022:BOOL=ON
++      -DBUILTIN_CODECS_JP:BOOL=ON
++      -DBUILTIN_CODECS_KR:BOOL=ON
++      -DBUILTIN_CODECS_TW:BOOL=ON
++      -DBUILTIN_CPICKLE:BOOL=ON
++      -DBUILTIN_CRYPT:BOOL=ON
++      -DBUILTIN_CSTRINGIO:BOOL=ON
++      -DBUILTIN_CSV:BOOL=ON
++      -DBUILTIN_CTYPES:BOOL=OFF
++      #-DBUILTIN_CTYPES_TEST:BOOL=OFF
++      #-DBUILTIN_CURSES:BOOL=ON
++      -DBUILTIN_DATETIME:BOOL=ON
++      -DBUILTIN_DBM:BOOL=ON
++      -DBUILTIN_ELEMENTTREE:BOOL=ON
++      -DBUILTIN_FCNTL:BOOL=ON
++      -DBUILTIN_FUNCTOOLS:BOOL=ON
++      -DBUILTIN_FUTURE_BUILTINS:BOOL=ON
++      -DBULTIN_GDBM:BOOL=ON
++      -DBUILTIN_GRP:BOOL=ON
++      -DBUILTIN_HASHLIB:BOOL=ON
++      -DBUILTIN_HEAPQ:BOOL=ON
++      -DBUILTIN_HOTSHOT:BOOL=ON
++      -DBUILTIN_IO:BOOL=ON
++      -DBUILTIN_ITERTOOLS:BOOL=ON
++      -DBUILTIN_JSON:BOOL=ON
++      -DBUILTIN_LOCALE:BOOL=ON
++      -DBUILTIN_LSPROF:BOOL=ON
++      -DBUILTIN_MATH:BOOL=ON
++      -DBUILTIN_MMAP:BOOL=ON
++      -DBUILTIN_MULTIBYTECODEC:BOOL=ON
++      -DBUILTIN_MD5:BOOL=ON
++      -DBUILTIN_MULTIPROCESSING:BOOL=ON
++      -DBUILTIN_NIS:BOOL=ON
++      -DBUILTIN_NIT:BOOL=ON
++      -DBUILTIN_OPERATOR:BOOL=ON
++      -DBUILTIN_PARSER:BOOL=ON
++      -DBUILTIN_POSIX:BOOL=ON
++      -DBUILTIN_PWD:BOOL=ON
++      -DBUILTIN_PYEXPAT:BOOL=ON
++      -DBUILTIN_READLINE:BOOL=ON
++      -DBUILTIN_RESOURCE:BOOL=ON
++      -DBULTIN_RANDOM:BOOL=ON
++      -DBUILTIN_SCPROXY:BOOL=OFF
++      -DBUILTIN_SELECT:BOOL=ON
++      -DBUILTIN_SHA:BOOL=ON
++      -DBUILTIN_SHA256:BOOL=ON
++      -DBUILTIN_SHA512:BOOL=ON
++      -DBUILTIN_SOCKET:BOOL=ON
++      -DBUILTIN_SPWD:BOOL=ON
++      -DBUILTIN_SQLITE3:BOOL=OFF
++      -DBUILTIN_SSL:BOOL=ON
++      -DBUILTIN_STROP:BOOL=ON
++      -DBUILTIN_STRUCT:BOOL=ON
++      -DBUILTIN_SUBPROCESS:BOOL=ON
++      -DBUILTIN_SYSLOG:BOOL=ON
++      -DBUILTIN_TERMIOS:BOOL=ON
++      #-DBUILTIN_TESTCAPI:BOOL=OFF
++      -DBUILTIN_TIME:BOOL=ON
++      -DBUILTIN_TKINTER:BOOL=ON
++      -DBUILTIN_UNICODEDATA:BOOL=ON
++      -DBUILTIN_WINREG:BOOL=ON
++      -DBUILTIN_ZLIB:BOOL=ON
++      -DUSE_SYSTEM_ZLIB:BOOL=OFF
++      -DUSE_SYSTEM_OpenSSL:BOOL=OFF
++      -DUSE_BUILTIN_ZLIB:BOOL=ON
++    )
+ 
+     if(CTEST_USE_LAUNCHERS)
+       list(APPEND additional_cmake_cache_args
+@@ -129,35 +132,47 @@ if( MITK_USE_Python AND NOT MITK_USE_SYSTEM_PYTHON )
+       set(_python_install_dir -DCMAKE_INSTALL_PREFIX:PATH=${ep_prefix}/lib/python${MITK_PYTHON_MAJOR_VERSION}.${MITK_PYTHON_MINOR_VERSION})
+     endif()
+ 
++    #add SetupTools
++    ExternalProject_Add(${proj}-SetupTools
++      #LIST_SEPARATOR ${sep}
++      URL "https://pypi.python.org/packages/source/s/setuptools/setuptools-20.7.0.tar.gz"
++      URL_MD5 "5d12b39bf3e75e80fdce54e44b255615"
++      CONFIGURE_COMMAND ""
++      BUILD_COMMAND ""
++      INSTALL_COMMAND ""
++    )
++
+     # CMake build environment for python from:
+     # https://github.com/davidsansome/python-cmake-buildsystem
+     ExternalProject_Add(${proj}
+       LIST_SEPARATOR ${sep}
+-      URL ${MITK_THIRDPARTY_DOWNLOAD_PREFIX_URL}/python-cmake-buildsystem-47845c55.tar.gz
+-      URL_MD5 "6e49d1ed93a5a0fff7621430c163d2d1"
++      GIT_REPOSITORY "https://github.com/python-cmake-buildsystem/python-cmake-buildsystem.git"
++      #URL ${MITK_THIRDPARTY_DOWNLOAD_PREFIX_URL}/python-cmake-buildsystem-47845c55.tar.gz
++      #URL_MD5 "6e49d1ed93a5a0fff7621430c163d2d1"
+       # fix to build python on i686 and i386 with the python cmake build system,
+       # the x86 path must be set as default
+-      PATCH_COMMAND ${PATCH_COMMAND} -N -p1 -i ${CMAKE_CURRENT_LIST_DIR}/python-cmake-buildsystem-47845c55.patch
++      #PATCH_COMMAND ${PATCH_COMMAND} -N -p1 -i ${CMAKE_CURRENT_LIST_DIR}/python-cmake-buildsystem-47845c55.patch
+       CMAKE_ARGS
+-        ${ep_common_args}
++      ${ep_common_args}
+       CMAKE_CACHE_ARGS
+-        ${ep_common_cache_args}
+-        -DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}
+-        -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}
+-        #-DBUILD_TESTING:BOOL=OFF
+-        -DBUILD_SHARED:BOOL=ON
+-        -DBUILD_STATIC:BOOL=OFF
+-        -DUSE_SYSTEM_LIBRARIES:BOOL=OFF
+-        ${additional_cmake_cache_args}
+-        ${_python_install_dir}
+-        -DZLIB_INCLUDE_DIR:PATH=${ZLIB_INCLUDE_DIR}
+-        -DZLIB_LIBRARY:FILEPATH=${ZLIB_LIBRARY}
+-        # Python (and Numpy) do not like different shared library names
+-        -DCMAKE_DEBUG_POSTFIX:STRING=
++      ${ep_common_cache_args}
++      -DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}
++      -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}
++      #-DBUILD_TESTING:BOOL=OFF
++      -DBUILD_SHARED:BOOL=ON
++      -DBUILD_STATIC:BOOL=OFF
++      -DUSE_SYSTEM_LIBRARIES:BOOL=ON
++      ${additional_cmake_cache_args}
++      ${_python_install_dir}
++      #-DZLIB_INCLUDE_DIR:PATH=${ZLIB_INCLUDE_DIR}
++      #-DZLIB_LIBRARY:FILEPATH=${ZLIB_LIBRARY}
++      # Python (and Numpy) do not like different shared library names
++      -DCMAKE_DEBUG_POSTFIX:STRING=
+       CMAKE_CACHE_DEFAULT_ARGS
+-        ${ep_common_cache_default_args}
++      ${ep_common_cache_default_args}
+       DEPENDS
+-        ${proj_DEPENDENCIES}
++      ${proj_DEPENDENCIES}
++      ${proj}-SetupTools
+     )
+ 
+     # set versions, override
+@@ -171,23 +186,36 @@ if( MITK_USE_Python AND NOT MITK_USE_SYSTEM_PYTHON )
+       set(PYTHON_INCLUDE_DIR2 "${PYTHON_INCLUDE_DIR}")
+       set(PYTHON_LIBRARY "${Python_DIR}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}python${MITK_PYTHON_MAJOR_VERSION}.${MITK_PYTHON_MINOR_VERSION}${CMAKE_SHARED_LIBRARY_SUFFIX}")
+       set(MITK_PYTHON_SITE_DIR "${Python_DIR}/lib/python${MITK_PYTHON_MAJOR_VERSION}.${MITK_PYTHON_MINOR_VERSION}/site-packages")
++      set(PYTHON_SETUPTOOLS_PY "${ep_prefix}/src/${proj}-SetupTools/setup.py")
+ 
+       # linux custom compile step, set the environment variables and python home to the right
+       # path. Other runtimes can mess up the paths of the installation and the stripped executable
+       # used to compile links to the wrong library in /usr/lib
+       set(_python_compile_step ${ep_prefix}/tmp/python_compile_step.sh)
+       file(WRITE ${_python_compile_step}
+-"#!/bin/bash
+-export PYTHONHOME=${Python_DIR}
+-export LD_LIBRARY_PATH=${Python_DIR}/lib
+-${PYTHON_EXECUTABLE} -m compileall
++        "#!/bin/bash
++        export PYTHONHOME=${Python_DIR}
++        export LD_LIBRARY_PATH=${Python_DIR}/lib
++        ${PYTHON_EXECUTABLE} -m compileall
++
++      ")
++
++      ExternalProject_Add_Step(${proj} fixRPath
++        COMMAND install_name_tool -id \@rpath/libpython2.7.dylib ${PYTHON_LIBRARY}
++        DEPENDEES install
++      )
++
++      ExternalProject_Add_Step(${proj} setupTool
++        COMMAND ${PYTHON_EXECUTABLE} ${PYTHON_SETUPTOOLS_PY} install
++        WORKING_DIRECTORY ${Python_DIR}
++        DEPENDEES compile_step
++      )
+ 
+-")
+       # pre compile all *.py files in the runtime after install step
+       ExternalProject_Add_Step(${proj} compile_step
+         COMMAND sh ${_python_compile_step}
+         WORKING_DIRECTORY ${Python_DIR}
+-        DEPENDEES install
++        DEPENDEES fixRPath
+       )
+ 
+       # use the python executable in the build dir for unix systems. The stripped
+@@ -205,6 +233,12 @@ ${PYTHON_EXECUTABLE} -m compileall
+       set(MITK_PYTHON_SITE_DIR "${Python_DIR}/Lib/site-packages")
+ 
+       # pre compile all *.py files in the runtime after install step
++      ExternalProject_Add_Step(${proj} ensurepip
++        COMMAND ${PYTHON_EXECUTABLE} ${PYTHON_SETUPTOOLS_PY} install
++        WORKING_DIRECTORY ${Python_DIR}
++        DEPENDEES compile_step
++      )
++
+       ExternalProject_Add_Step(${proj} compile_step
+         COMMAND ${PYTHON_EXECUTABLE} -m compileall
+         WORKING_DIRECTORY ${Python_DIR}
+@@ -214,10 +248,10 @@ ${PYTHON_EXECUTABLE} -m compileall
+ 
+     mitkFunctionInstallExternalCMakeProject(${proj})
+     install(DIRECTORY ${Python_DIR}
+-            DESTINATION .
+-            COMPONENT runtime
+-            FILES_MATCHING PATTERN "*.pyc"
+-           )
++      DESTINATION .
++      COMPONENT runtime
++      FILES_MATCHING PATTERN "*.pyc"
++    )
+ 
+   else()
+     mitkMacroEmptyExternalProject(${proj} "${proj_DEPENDENCIES}")
+diff --git a/CMakeExternals/SimpleITK.cmake b/CMakeExternals/SimpleITK.cmake
+index 972da24..92ffcd6 100644
+--- a/CMakeExternals/SimpleITK.cmake
++++ b/CMakeExternals/SimpleITK.cmake
+@@ -12,6 +12,12 @@ if(MITK_USE_SimpleITK)
+   set(proj SimpleITK)
+   set(proj_DEPENDENCIES ITK GDCM SWIG)
+ 
++  set(MITK_SIMPLEITK_MAJOR_VERSION 0)
++  set(MITK_SIMPLEITK_MINOR_VERSION 9)
++  set(MITK_SIMPLEITK_PATCH_VERSION 1)
++
++  set(MITK_SIMPLEITK_VERSION ${MITK_SIMPLEITK_MAJOR_VERSION}.${MITK_SIMPLEITK_MINOR_VERSION}.${MITK_SIMPLEITK_PATCH_VERSION})
++
+   if(MITK_USE_OpenCV)
+     list(APPEND proj_DEPENDENCIES OpenCV)
+   endif()
+@@ -51,17 +57,14 @@ if(MITK_USE_SimpleITK)
+       )
+     endif()
+ 
+-    #TODO: Installer and testing works only with static libs on MAC
+     set(_build_shared ON)
+-    if(APPLE)
+-      set(_build_shared OFF)
+-    endif()
++    set(_git_tag v${MITK_SIMPLEITK_VERSION})
++    set(_git_repository "http://itk.org/SimpleITK.git")
+ 
+     ExternalProject_Add(${proj}
+        LIST_SEPARATOR ${sep}
+-       URL ${MITK_THIRDPARTY_DOWNLOAD_PREFIX_URL}/SimpleITK-0.8.1.tar.gz
+-       URL_MD5 9126ab2eda9e88f598a962c02a705c43
+-       PATCH_COMMAND ${PATCH_COMMAND} -N -p1 -i ${CMAKE_CURRENT_LIST_DIR}/SimpleITK-0.8.1.patch
++       GIT_REPOSITORY ${_git_repository}
++       GIT_TAG ${_git_tag}
+        CMAKE_ARGS
+          ${ep_common_args}
+          # -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON
+@@ -122,8 +125,20 @@ if(MITK_USE_SimpleITK)
+           WORKING_DIRECTORY ${_sitk_build_dir}/Wrapping/PythonPackage
+         )
+       endif()
+-    endif()
+ 
++    if(APPLE)
++        set(SimpleITK_Build_Dir ${_sitk_build_dir})
++
++        set(APPLE_CMAKE_SCRIPT ${ep_prefix}/src/${proj}-cmake/ChangeSimpleITKLibsInstallNameForMac.cmake)
++        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CMakeExternals/ChangeSimpleITKLibsInstallNameForMac.cmake.in ${APPLE_CMAKE_SCRIPT} @ONLY)
++
++        ExternalProject_Add_Step(${proj} sitk_fix_libraries
++          COMMAND ${CMAKE_COMMAND} -P ${APPLE_CMAKE_SCRIPT}
++          DEPENDERS sitk_python_install_step
++          DEPENDEES install
++        )
++    endif()
++  endif()
+     mitkFunctionInstallExternalCMakeProject(${proj})
+     # Still need to install the SimpleITK Python wrappings
+   else()
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index fb1b2bf..378db29 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -252,7 +252,6 @@ endif()
+ set_property(GLOBAL PROPERTY MITK_EXTERNAL_PROJECTS "")
+ 
+ mitkFunctionAddExternalProject(NAME Poco        ON  COMPONENTS Foundation Util XML Zip)
+-mitkFunctionAddExternalProject(NAME Boost       OFF DOC "Use the Boost C++ library")
+ mitkFunctionAddExternalProject(NAME DCMTK       ON  DOC "EXPERIMENTAL, superbuild only: Use DCMTK in MITK")
+ mitkFunctionAddExternalProject(NAME OpenIGTLink OFF)
+ 
+@@ -280,6 +279,7 @@ mitkFunctionAddExternalProject(NAME Python    OFF          NO_PACKAGE DEPENDS SW
+ mitkFunctionAddExternalProject(NAME Numpy     OFF ADVANCED NO_PACKAGE)
+ mitkFunctionAddExternalProject(NAME OpenCV    OFF)
+ mitkFunctionAddExternalProject(NAME Vigra     OFF          DEPENDS HDF5)
++mitkFunctionAddExternalProject(NAME Boost     OFF DOC "Use the Boost C++ library")
+ 
+ # These are "hard" dependencies and always set to ON
+ mitkFunctionAddExternalProject(NAME ITK       ON           NO_CACHE)

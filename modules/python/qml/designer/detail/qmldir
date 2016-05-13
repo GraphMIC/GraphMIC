@@ -1,0 +1,17 @@
+module org.graphmic.python.designer.detail
+Loader 1.0 loader.qml
+Bool 1.0 bool.qml
+Dir 1.0 dir.qml
+Files 1.0 files.qml
+Node 1.0 node.qml
+Number 1.0 number.qml
+Option 1.0 option.qml
+String 1.0 string.qml
+Vector 1.0 vector.qml
+View 1.0 view.qml
+Group 1.0 group.qml
+TextField 1.0 textfield.qml
+BoolField 1.0 boolfield.qml
+OptionField 1.0 optionfield.qml
+Input 1.0 input.qml
+Output 1.0 output.qml

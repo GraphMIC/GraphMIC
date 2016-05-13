@@ -1,0 +1,9 @@
+module org.graphmic.core.node.editor
+Search 1.0 search.qml
+SearchEntry 1.0 searchentry.qml
+View 1.0 view.qml
+PropertyView 1.0 propertyview.qml
+GraphView 1.0 graphview.qml
+NodeProperties 1.0 nodeproperties.qml
+Header 1.0 header.qml
+Icon 1.0 icon.qml

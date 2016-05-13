@@ -1,0 +1,3 @@
+module org.graphmic.viewer.properties
+Properties 1.0 properties.qml
+Item 1.0 propertyItem.qml

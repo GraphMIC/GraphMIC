@@ -1,0 +1,14 @@
+{
+	"test": {
+		"prefix": "cv",
+		"name": "Canny",
+		"exclude": false,
+		"cases": [{
+			"pass": true,
+			"input": { "dim": 2, "pixel": "scalar", "component": "uchar" }
+		}, {
+			"pass": true,
+			"input": { "dim": 2, "pixel": "rgb", "component": "uchar" }
+		}]
+	}
+}

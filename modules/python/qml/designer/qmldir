@@ -1,0 +1,8 @@
+module org.graphmic.python.designer
+View 1.0 view.qml
+NodeView 1.0 nodeview.qml
+Properties 1.0 properties.qml
+Preview 1.0 preview.qml
+TitleSection 1.0 titlesection.qml
+Loader 1.0 loader.qml
+AddMenu 1.0 addmenu.qml

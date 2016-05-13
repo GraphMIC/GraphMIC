@@ -1,0 +1,26 @@
+module org.graphmic.core.lib
+CheckBox 1.0 checkbox.qml
+DropDown 1.0 dropdown.qml
+Edge 1.0 edge.qml
+Icon 1.0 icon.qml
+Grid 1.0 grid.qml
+IconButton 1.0 iconbutton.qml
+Icons 1.0 icons.js
+Label 1.0 label.qml
+Layout 1.0 layoutenums.js
+MouseArea 1.0 mousearea.qml
+Orientation 1.0 orientation.js
+ScrollView 1.0 scrollview.qml
+TagLabel 1.0 taglabel.qml
+TextButton 1.0 textbutton.qml
+TextEdit 1.0 textedit.qml
+TextInput 1.0 textinput.qml
+SplitView 1.0 splitview.qml
+TabLabel 1.0 tablabel.qml
+TabView 1.0 tabview.qml
+TabHeader 1.0 tabheader.qml
+SpinBox 1.0 spinbox.qml
+Slider 1.0 slider.qml
+DoubleSlider 1.0 doubleslider.qml
+ScrollColumn 1.0 scrollcolumn.qml
+ListView 1.0 listview.qml

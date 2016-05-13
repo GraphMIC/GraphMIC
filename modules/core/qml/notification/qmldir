@@ -1,0 +1,5 @@
+module org.graphmic.core.notification
+View 1.0 view.qml
+Entry 1.0 entry.qml
+TextLabel 1.0 textlabel.qml
+TitleLabel 1.0 titlelabel.qml

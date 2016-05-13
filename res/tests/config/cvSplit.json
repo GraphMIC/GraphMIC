@@ -1,0 +1,26 @@
+{
+	"test": {
+		"prefix": "cv",
+		"name": "Split",
+		"exclude": false,
+		"cases": [{
+			"pass": true,
+			"input": { "dim": 2, "pixel": "rgb", "component": "uchar" }
+		}, {
+			"pass": true,
+			"input": { "dim": 2, "pixel": "rgb", "component": "ushort" }
+		}, {
+			"pass": true,
+			"input": { "dim": 2, "pixel": "rgb", "component": "uint" }
+		}, {
+			"pass": true,
+			"input": { "dim": 2, "pixel": "rgb", "component": "char" }
+		}, {
+			"pass": true,
+			"input": { "dim": 2, "pixel": "rgb", "component": "short" }
+		}, {
+			"pass": true,
+			"input": { "dim": 2, "pixel": "rgb", "component": "int" }
+		}]
+	}
+}

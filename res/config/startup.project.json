@@ -1,0 +1,10 @@
+{
+	"project" :
+	{	
+		"name" : "New Project",
+		"resources" : [{
+			"type" : "graph",
+			"name" : "New Graph"
+		}]
+	}
+}

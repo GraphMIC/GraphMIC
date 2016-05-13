@@ -1,0 +1,3 @@
+module org.graphmic.viewer.navigator
+ImageNavigator 1.0 imageNavigator.qml
+SubItem 1.0 imageNavigatorSubItem.qml

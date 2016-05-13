@@ -1,0 +1,3 @@
+module org.graphmic.viewer.properties.datamanager
+DataManager 1.0 dataManager.qml
+Delegate 1.0 dataManagerDelegate.qml

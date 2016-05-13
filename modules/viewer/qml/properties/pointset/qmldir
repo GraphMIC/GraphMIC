@@ -1,0 +1,4 @@
+module org.graphmic.viewer.properties.pointSet
+PointSetTool 1.0 pointSetTool.qml
+Toolbar 1.0 pointSetToolToolbar.qml
+Button 1.0 pointSetToolButton.qml

@@ -1,0 +1,44 @@
+{
+	"test": {
+		"prefix": "itk",
+		"name": "ModulusImageFilter",
+		"exclude": false,
+        "cases": [{
+			"pass": true,
+			"input": { "dim": 2, "pixel": "scalar", "component": "uchar" }
+		}, {
+			"pass": true,
+			"input": { "dim": 2, "pixel": "scalar", "component": "ushort" }
+		}, {
+			"pass": true,
+			"input": { "dim": 2, "pixel": "scalar", "component": "uint" }
+		}, {
+			"pass": true,
+			"input": { "dim": 2, "pixel": "scalar", "component": "char" }
+		}, {
+			"pass": true,
+			"input": { "dim": 2, "pixel": "scalar", "component": "short" }
+		}, {
+			"pass": true,
+			"input": { "dim": 2, "pixel": "scalar", "component": "int" }
+		}, {
+			"pass": true,
+			"input": { "dim": 3, "pixel": "scalar", "component": "uchar" }
+		}, {
+			"pass": true,
+			"input": { "dim": 3, "pixel": "scalar", "component": "ushort" }
+		}, {
+			"pass": true,
+			"input": { "dim": 3, "pixel": "scalar", "component": "uint" }
+		}, {
+			"pass": true,
+			"input": { "dim": 3, "pixel": "scalar", "component": "char" }
+		}, {
+			"pass": true,
+			"input": { "dim": 3, "pixel": "scalar", "component": "short" }
+		}, {
+			"pass": true,
+			"input": { "dim": 3, "pixel": "scalar", "component": "int" }
+		}]
+	}
+}

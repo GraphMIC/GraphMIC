@@ -1,0 +1,4 @@
+module org.graphmic.viewer.properties.volume
+VolumeVisualization 1.0 volumeVisualization.qml
+Overlay 1.0 volumeVisualizationOverlay.qml
+TransferFunction 1.0 volumeVisualizationTransfer.qml

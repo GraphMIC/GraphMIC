@@ -1,0 +1,104 @@
+{
+	"test": {
+		"prefix": "itk",
+		"name": "NaryMaximumImageFilter",
+		"exclude": false,
+		"cases": [{
+			"pass": true,
+			"input": [
+                { "dim": 2, "pixel": "scalar", "component": "uchar", "type": "a"},
+                { "dim": 2, "pixel": "scalar", "component": "uchar", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 2, "pixel": "scalar", "component": "ushort", "type": "a"},
+                { "dim": 2, "pixel": "scalar", "component": "ushort", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 2, "pixel": "scalar", "component": "uint", "type": "a"},
+                { "dim": 2, "pixel": "scalar", "component": "uint", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 2, "pixel": "scalar", "component": "char", "type": "a"},
+                { "dim": 2, "pixel": "scalar", "component": "char", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 2, "pixel": "scalar", "component": "short", "type": "a"},
+                { "dim": 2, "pixel": "scalar", "component": "short", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 2, "pixel": "scalar", "component": "int", "type": "a"},
+                { "dim": 2, "pixel": "scalar", "component": "int", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 2, "pixel": "scalar", "component": "float", "type": "a"},
+                { "dim": 2, "pixel": "scalar", "component": "float", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 2, "pixel": "scalar", "component": "double", "type": "a"},
+                { "dim": 2, "pixel": "scalar", "component": "double", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 3, "pixel": "scalar", "component": "uchar", "type": "a"},
+                { "dim": 3, "pixel": "scalar", "component": "uchar", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 3, "pixel": "scalar", "component": "ushort", "type": "a"},
+                { "dim": 3, "pixel": "scalar", "component": "ushort", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 3, "pixel": "scalar", "component": "uint", "type": "a"},
+                { "dim": 3, "pixel": "scalar", "component": "uint", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 3, "pixel": "scalar", "component": "char", "type": "a"},
+                { "dim": 3, "pixel": "scalar", "component": "char", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 3, "pixel": "scalar", "component": "short", "type": "a"},
+                { "dim": 3, "pixel": "scalar", "component": "short", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 3, "pixel": "scalar", "component": "int", "type": "a"},
+                { "dim": 3, "pixel": "scalar", "component": "int", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 3, "pixel": "scalar", "component": "float", "type": "a"},
+                { "dim": 3, "pixel": "scalar", "component": "float", "type": "b"}
+            ]
+		}, {
+			"pass": true,
+			"input": [
+                { "dim": 3, "pixel": "scalar", "component": "double", "type": "a"},
+                { "dim": 3, "pixel": "scalar", "component": "double", "type": "b"}
+            ]
+		}]
+	}
+}

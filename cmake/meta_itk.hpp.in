@@ -1,0 +1,15 @@
+#pragma once
+
+namespace gm
+{
+    namespace Logic
+    {
+        namespace Itk
+        {
+            struct Meta
+            {
+                static constexpr auto versionString = "@ITK_VERSION_MAJOR@.@ITK_VERSION_MINOR@.@ITK_VERSION_PATCH@";
+            };
+        }
+    }
+}

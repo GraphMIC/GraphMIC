@@ -1,0 +1,3 @@
+module org.graphmic.viewer.visualization
+MultiItem 1.0 stdMultiItem.qml
+Toolbar 1.0 stdMultiItemToolbar.qml

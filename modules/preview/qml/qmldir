@@ -1,0 +1,7 @@
+module org.graphmic.preview
+View 1.0 view.qml
+ImageView 1.0 imageview.qml
+NumberView 1.0 numberview.qml
+VectorView 1.0 vectorview.qml
+PointsetView 1.0 pointsetview.qml
+Navigator 1.0 navigator.qml

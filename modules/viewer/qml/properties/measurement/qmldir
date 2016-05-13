@@ -1,0 +1,3 @@
+module org.graphmic.viewer.measurement
+MeasurementTool 1.0 measurementTool.qml
+Button 1.0 measurementToolButton.qml

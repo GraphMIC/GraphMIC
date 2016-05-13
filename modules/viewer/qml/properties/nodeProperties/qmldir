@@ -1,0 +1,5 @@
+module org.graphmic.viewer.properties.nodeProperties
+NodeProperties 1.0 nodeProperties.qml
+General 1.0 nodePropertyGeneral.qml
+Masking 1.0 nodePropertyMasking.qml
+PointSet 1.0 nodePropertyPointSet.qml

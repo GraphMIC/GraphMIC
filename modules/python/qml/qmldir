@@ -1,0 +1,4 @@
+module org.graphmic.python
+View 1.0 view.qml
+Header 1.0 header.qml
+Icon 1.0 icon.qml

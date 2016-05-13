@@ -1,0 +1,11 @@
+module org.graphmic.core.node.param
+Bool 1.0 bool.qml
+Dir 1.0 dir.qml
+Files 1.0 files.qml
+Number 1.0 number.qml
+Group 1.0 group.qml
+Loader 1.0 loader.qml
+Option 1.0 option.qml
+String 1.0 string.qml
+TextInput 1.0 textinput.qml
+Vector 1.0 vector.qml

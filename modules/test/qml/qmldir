@@ -1,0 +1,11 @@
+module org.graphmic.test
+Window 1.0 window.qml
+Header 1.0 header.qml
+Footer 1.0 footer.qml
+TitledLabel 1.0 titledlabel.qml
+OutputView 1.0 outputview.qml
+UnitListView 1.0 unitlistview.qml
+CaseListView 1.0 caselistview.qml
+CaseView 1.0 caseview.qml
+UnitView 1.0 unitview.qml
+UnitResultView 1.0 unitresultview.qml

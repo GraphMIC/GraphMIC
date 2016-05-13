@@ -1,0 +1,5 @@
+module org.graphmic.core.node.slot
+Input 1.0 input.qml
+Output 1.0 output.qml
+Preview 1.0 preview.qml
+ConstraintsView 1.0 constraintsview.qml

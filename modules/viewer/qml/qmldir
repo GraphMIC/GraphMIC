@@ -1,0 +1,3 @@
+module org.graphmic.viewer
+View 1.0 externalViewer.qml
+ExternalViewerHeader 1.0 externalViewerHeader.qml

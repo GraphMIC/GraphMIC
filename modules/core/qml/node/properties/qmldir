@@ -1,0 +1,6 @@
+module org.graphmic.core.node.properties
+View 1.0 view.qml
+Params 1.0 params.qml
+Inputs 1.0 inputs.qml
+Outputs 1.0 outputs.qml
+Section 1.0 section.qml

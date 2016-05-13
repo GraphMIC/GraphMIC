@@ -1,0 +1,2 @@
+module org.graphmic.viewer.statistics
+ImageStatisticsTool 1.0 imageStatisticsTool.qml

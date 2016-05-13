@@ -1,0 +1,38 @@
+{
+  "scheme":
+  {
+    "name": "python",
+    "suffixes" : ["py"],
+    "highlight" :
+    [
+      {
+        "name" : "numbers",
+        "pattern" : "\\d[.]?[f]?",
+        "color" : "#8E7FFF"
+      },
+      {
+        "name" : "brackets",
+        "pattern" : "[(|)|{|}|\\[|\\]]",
+        "color" : "#fff",
+        "bold" : true
+      },
+      {
+        "name" : "strings",
+        "pattern" : "\".*\"",
+        "color" : "#B4CA6E"
+      },
+      {
+        "name" : "operators",
+        "pattern" : "[!|=|&|%|?|<|>|*|+|+|-|/]",
+        "color" : "#EC2772",
+        "bold" : true
+      },
+      {
+        "name" : "keywords",
+        "pattern" : "\\band\\b|\\bas\\b|\\bassert\\b|\\bbreak\\b|\\bclass\\b|\\bcontinue\\b|\\bdef\\b|\\bdel\\b|\\belif\\b|\\belse\\b|\\bexcept\\b|\\bexec\\b|\\bfinally\\b|\\bfor\\b|\\bfrom\\b|\\bglobal\\b|\\bif\\b|\\bimport\\n|\\bin\\b|\\bis\\b|\\blambda\\b|\\bnot\\b|\\bor\\b|\\bpass\\b|\\bprint\\b|\\braise\\b|\\breturn\\b|\\btry\\b|\\bwhile\\b|\\bwith\\b|\\byield\\b|\\bTrue\\b|\\bFalse\\b",
+        "color" : "#D78A40",
+        "bold" : true
+      }
+    ]
+  }
+}
