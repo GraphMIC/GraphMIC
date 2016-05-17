@@ -161,7 +161,7 @@ set(MITK_SOURCE_DIR "" CACHE PATH "MITK source code location. If empty, MITK wil
 
   if(MITK_USE_Boost AND MITK_USE_Python)
     set(Boost_LIBRARY_DIR "${CMAKE_BINARY_DIR}/${proj}/bin/${ep_prefix}/lib")
-    set(Boost_INCLUDE_DIR "${CMAKE_BINARY_DIR}/${proj}/bin/${ep_prefix}/include")
+    set(Boost_INCLUDE_DIR "${CMAKE_BINARY_DIR}/${proj}/bin/${ep_prefix}/include/boost-1_60")
     if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
       set(Boost_PYTHON_LIBRARY_DEBUG "${CMAKE_BINARY_DIR}/${proj}/bin/${ep_prefix}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}boost_python-mt-d${CMAKE_SHARED_LIBRARY_SUFFIX}")
       set(Boost_PYTHON_LIBRARY_RELEASE "${Boost_PYTHON_LIBRARY_DEBUG}")
