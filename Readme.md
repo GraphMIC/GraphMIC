@@ -7,7 +7,7 @@
 <img src="doc/img/screenshot.png" width="100%" />
 
 ![Version](https://img.shields.io/badge/version-0.7-blue.svg)
-[![Slack](https://img.shields.io/badge/slack-GraphMIC-brightgreen.svg)](https://graphmic.slack.com)
+
 
 **PROJECT ARCHIVED**
 
@@ -71,7 +71,7 @@ We will try to provide relevant developer documentation as soon as possible!
 Contact
 ----
 
-Send us a mail to <a href="mailto:contact@graphmic.com">info@graphmic.com</a>
+Send us a mail to <a href="mailto:contact@graphmic.com">contact@graphmic.com</a>
 
 License
 ----
