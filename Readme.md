@@ -4,11 +4,6 @@
 	<b style="color: #437ABE">C</b>omputing
 </center>
 
-<img src="doc/img/screenshot.png" width="100%" />
-
-![Version](https://img.shields.io/badge/version-0.7-blue.svg)
-
-
 **PROJECT ARCHIVED**
 
 GraphMIC provides a node based interface for **[ITK](https://itk.org)** and **[OpenCV](http://opencv.org)** operations and allows simple creation of complex image processing pipelines without programming. Various high-level features like built-in 2D and 3D data visualization based on **[VTK](http://www.vtk.org)** and an integrated **[Python](https://www.python.org)** Interpreter aim to support typical workflows.
@@ -29,14 +24,9 @@ The embedded python interpreter allows cration of custom nodes. After defining a
 ### Built-In Visualization
 An integrated image viewer based on **[MITK](http://mitk.org/)** makes it possible to easily access features like CPU/GPU volume rendering and interaction processing for ROIs, seed points and annotations.
 
-<img src="doc/img/screens.png" width="100%" />
 
 ### Automated Testing
 GraphMIC provides a separated testing variant of the executable application in order to test different image processing operations. A JSON configuration is used to define a test unit with different test cases, where each test case can specify a different set of parameters and image types. GraphMIC also contains a set of built-in test images to use for different test scenarios.
-
-<center>
-	<img src="doc/img/screen_testing.png" width="80%" />
-</center>
 
 ### And Many Other Features
 - Cross Platform
@@ -48,8 +38,6 @@ GraphMIC provides a separated testing variant of the executable application in o
 Current Development Status
 ----
 This software is in an early state of development. Since the initial commit can be considered as just a transfer of our private repository to GitHub, we still have to do a lot of work to achieve a stable state. 
-
-<img src="doc/img/roadmap.png" width="400px" />
 
 ### version 0.8
 
