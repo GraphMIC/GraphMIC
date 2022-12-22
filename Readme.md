@@ -9,6 +9,8 @@
 ![Version](https://img.shields.io/badge/version-0.7-blue.svg)
 [![Slack](https://img.shields.io/badge/slack-GraphMIC-brightgreen.svg)](https://graphmic.slack.com)
 
+**PROJECT ARCHIVED**
+
 GraphMIC provides a node based interface for **[ITK](https://itk.org)** and **[OpenCV](http://opencv.org)** operations and allows simple creation of complex image processing pipelines without programming. Various high-level features like built-in 2D and 3D data visualization based on **[VTK](http://www.vtk.org)** and an integrated **[Python](https://www.python.org)** Interpreter aim to support typical workflows.
 
 **<p style="color: #ff7722">Detailed Build-Instructions will be available soon!</p>**
@@ -66,30 +68,11 @@ Contributions are welcome!
 
 We will try to provide relevant developer documentation as soon as possible! 
 
-Acknowledgements
-----
-This software was developed in collaboration with [OTH Regensburg](https://www.oth-regensburg.de/en.html) and [ReMIC](http://www.re-mic.de)
-
-<img src="doc/img/logo_OTH_ReMIC.png" width="260px" />
-
 Contact
 ----
 
-Send us a mail to <a href="mailto:info@graphmic.com">info@graphmic.com</a>
+Send us a mail to <a href="mailto:contact@graphmic.com">info@graphmic.com</a>
 
 License
 ----
-[![License](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-
-Copyright (c) 2014-2016, Alexander Eduard Szalo, Alexander Zehner
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+GraphMIC is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
